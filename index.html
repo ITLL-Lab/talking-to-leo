@@ -146,7 +146,7 @@ const LEO_CONFIG = {
   ANTHROPIC_API_KEY: "",
   OPENAI_API_KEY: "",
   DEFAULT_PROVIDER: "anthropic",
-  DEFAULT_MODEL: "claude-sonnet-4-5-20250929",
+  DEFAULT_MODEL: "claude-sonnet-5-5",
   USE_SERVER_PROXY: true
 };
 const DURATION = (()=>{ const q = new URLSearchParams(location.search); const s = parseInt(q.get("seconds")||"",10); return (s>0 && s<=600) ? s : 120; })();
