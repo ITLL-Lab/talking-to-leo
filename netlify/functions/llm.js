@@ -31,7 +31,10 @@ exports.handler = async (event) => {
       });
       const d = await r.json();
       if (!r.ok) return { statusCode: r.status, body: JSON.stringify({ error: (d.error && d.error.message) || "Anthropic error" }) };
-      return { statusCode: 200, headers: { "content-type": "application/json" }, body: JSON.stringify({ text: d.content[0].text }) };
+      // Join every text block (some models lead with a non-text block, which
+      // used to make the reply come back empty).
+      const text = (d.content || []).filter(b => b && b.type === "text").map(b => b.text || "").join("");
+      return { statusCode: 200, headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) };
     } else {
       if (!OKEY) return { statusCode: 500, body: JSON.stringify({ error: "OPENAI_API_KEY is not set in Netlify environment variables." }) };
       const r = await fetch("https://api.openai.com/v1/chat/completions", {
